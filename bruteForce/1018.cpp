@@ -51,10 +51,6 @@ int	check(int N, int M, int board[][50])
 	return (curMix);
 }
 
-//어디를 자를지 생각->
-//색칠할 색 선택
-//갯수파악
-//출력
 int	main(void)
 {
 	int	N, M;
@@ -83,16 +79,6 @@ int	main(void)
 				board[idx1][idx2] = B;
 		}
 	}
-	// std::cout << "<board>" << std::endl;
-	// for (int idx1 = 0; idx1 < N; idx1++)
-	// {
-	// 	for (int idx2 = 0; idx2 < M; idx2++)
-	// 	{
-	// 		std::cout << board[idx1][idx2];
-	// 	}
-	// 	std::cout << std::endl;
-	// }
-	// std::cout << std::endl;
 	std::cout << check(N, M, board);
 	return (0);
 }
