@@ -1,24 +1,27 @@
 #include <iostream>
 
-int	main(void)
+int get_gcd(int a, int b) {
+	while (b != 0) {
+		int r = a % b;
+		a = b;
+		b = r;
+	}
+	return a;
+}
+
+int main(void)
 {
 	std::ios::sync_with_stdio(false);
 	std::cin.tie(nullptr);
-	int	n;
-	int	a, b;
-
+	int n;
 	std::cin >> n;
-	for (int i = 0; i < n; i++)
-	{
+
+	while (n--) {
+		int a, b;
 		std::cin >> a >> b;
-		int	gcd = 0, lcm;
-		for (int j = 0; j < a || j < b; j++)
-		{
-			if (a % j == 0 && b % j == 0 && gcd < j)
-				gcd = j;
-		}
-		lcm = a * b / gcd;
+		int gcd = get_gcd(a, b);
+		int lcm = a * b / gcd;
 		std::cout << lcm << " " << gcd << '\n';
 	}
-	return (0);
+	return 0;
 }
