@@ -40,6 +40,10 @@
 		"clocale": "cpp",
 		"memory": "cpp",
 		"algorithm": "cpp",
-		"queue": "cpp"
+		"queue": "cpp",
+		"cstdarg": "cpp",
+		"ctime": "cpp",
+		"optional": "cpp",
+		"tuple": "cpp"
 	}
 }
