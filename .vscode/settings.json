@@ -44,6 +44,10 @@
 		"cstdarg": "cpp",
 		"ctime": "cpp",
 		"optional": "cpp",
-		"tuple": "cpp"
+		"tuple": "cpp",
+		"__node_handle": "cpp",
+		"complex": "cpp",
+		"ratio": "cpp",
+		"sstream": "cpp"
 	}
 }
