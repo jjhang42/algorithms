@@ -1,50 +1,41 @@
 #include <iostream>
 #include <queue>
+#include <deque>
 
-int	solutions(int start, int end, std::queue<int> q, int board[100001])
+int	solutions(int start, int end, std::deque<std::pair<int, int>> q, int board[100001])
 {
-	int	time = 0;
 	int	dx[2] = {-1, 1};
-	q.push(start);
-	while (true)
+	q.push_back({start, 0});
+	board[start] = 1;
+	while (!q.empty())
 	{
-		int size = q.size();
-		while (size--)
+		std::pair<int, int>	cur = q.front();
+		q.pop_front();
 		{
-			int	cur = q.front();
-			q.pop();
-			while (cur < 100001)
+			int	times = cur.first * 2;
+			if (0 <= times && times <= 100001 && board[times] == 0)
 			{
-				if (cur < 0 || 100001 <= cur)
-					break;
-				if (cur == end)
-					return (time);
-				board[cur] = 1;
-				q.push(cur);
-				cur *= 2;
+				if (times == end)
+					return (cur.second);
+				board[times] = 1;
+				q.push_front({times, cur.second});
 			}
 		}
-		time++;
-		size = q.size();
-		while (size--)
+		for (int i = 0; i < 2; i++)
 		{
-			int	cur = q.front();
-			q.pop();
-			for (int i = 0; i < 2; i++)
-			{
-				int	nx = dx[i] + cur;
-				if (nx < 0 || 100001 <= nx)
-					continue;
-				if (board[nx] != 0)
-					continue;
-				if (nx == cur)
-					return (time);
-				board[nx] = 1;
-				q.push(nx);
-			}
+			int	nx = dx[i] + cur.first;
+			int	time = cur.second + 1;
+			if (nx < 0 || 100001 <= nx)
+				continue;
+			if (board[nx] != 0)
+				continue;
+			if (nx == end)
+				return (time);
+			board[nx] = 1;
+			q.push_back({nx, time});
 		}
 	}
-	return(time);
+	return(0);
 }
 
 int	main(void)
@@ -53,7 +44,7 @@ int	main(void)
 	int	start;
 	int end;
 	std::cin >> start >> end;
-	std::queue<int>	q;
+	std::deque<std::pair<int, int>>	q;
 	std::cout << solutions(start, end, q, board) << '\n';
 	return (0);
 }
