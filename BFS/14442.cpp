@@ -2,35 +2,24 @@
 #include <queue>
 #include <climits>
 #include <tuple>
+#include <string>
 
-void	initBoard(int x, int y, int k, int board[][1001][1001])
+int		board[11][1001][1001];
+
+void	initBoard(int &x, int &y)
 {
-
 	for (int i = 0; i < x; i++)
 	{
-		for (int j = 0; j < k; j++)
+		std::string	tem;
+		std::cin >> tem;
+		for (int j = 0; j < y; j++)
 		{
-			int	tem;
-			std::cin >> tem;
-			if (tem == 1)
-			{
-				for (int a = 0; a < k; a++)
-					board[a][i][j] = -2;
-			}
+			if (tem[j] == '1')
+				board[0][i][j] = -1;
 			else
-			{
-				for (int a = 0; a < k; a++)
-					board[a][i][j] = -1;
-			}
+				board[0][i][j] = 0;
 		}
 	}
-}
-
-bool	IsExit(int x, int y, int nx, int ny)
-{
-	if (x == nx - 1 && y == ny - 1)
-		return (true);
-	return (false);
 }
 
 bool	IsOverFlow(int x, int y, int z, int nx, int ny, int nz)
@@ -39,35 +28,64 @@ bool	IsOverFlow(int x, int y, int z, int nx, int ny, int nz)
 		return (true);
 	if (ny < 0 || y <= ny)
 		return (true);
-	if (nz < 0 || z <= nz)
+	if (nz < 0 || z < nz)
 		return (true);
 	return (false);
 }
 
-int	solution(int x, int y, int k, int board[][1001][1001])
+// void	printlayer(int x, int y, int z)
+// {
+// 	std::cout << '\n' << "layer: " << z << '\n';
+// 	for (int i = 0; i < x; i++)
+// 	{
+// 		for (int j = 0; j < y; j++)
+// 		{
+// 			std::cout << board[z][i][j];
+// 		}
+// 		std::cout << '\n';
+// 	}
+// }
+
+int	solution(int x, int y, int z)
 {
 	if (x == 1 && y == 1)
-		return (0);
-
+		return (1);
 	int	dx[4] = {0, 0, 1, -1};
 	int	dy[4] = {1, -1, 0, 0};
 	std::queue<std::tuple<int, int, int>>	q;
 	q.push({0, 0, 0});
-	board[0][0][0] = 0;
+	board[0][0][0] = 1;
 	while (!q.empty())
 	{
-		int	x = std::get<0>(q.front());
-		int	y = std::get<1>(q.front());
-		int	z = std::get<2>(q.front());
+		int	cx = std::get<0>(q.front());
+		int	cy = std::get<1>(q.front());
+		int	cz = std::get<2>(q.front());
 		q.pop();
 		for (int i = 0; i < 4; i++)
 		{
-			int	nx = x + dx[i];
-			int	ny = y + dy[i];
-			int	nz = z;
-			if (IsOverFlow(x, y, z, nz, ny, nz))
+			int	nx = cx + dx[i];
+			int	ny = cy + dy[i];
+			int	nz = cz;
+			if (IsOverFlow(x, y, z, nx, ny, nz))
 				continue;
-			if (z < k && board )
+			if (board[0][nx][ny] != 0)
+			{
+				if (nz < z)
+					nz++;
+				else
+					continue;
+			}
+			if (board[nz][nx][ny] == 0)
+			{
+				board[nz][nx][ny] = board[cz][cx][cy] + 1;
+				if (nx == x - 1 && ny == y - 1)
+				{
+					// printlayer(x, y, 0);
+					// printlayer(x, y, nz);
+					return (board[nz][nx][ny]);
+				}
+				q.push({nx, ny, nz});
+			}
 		}
 	}
 	return (-1);
@@ -77,10 +95,9 @@ int	main(void)
 {
 	std::ios::sync_with_stdio(false);
 	std::cin.tie(nullptr);
-	int	board[11][1001][1001];
-	int		k, x, y;
-	std::cin >> x >> y >> k;
-	initBoard(x, y, k, board);
-	std::cout << solution(x, y, k, board);
+	int		x, y, z;
+	std::cin >> x >> y >> z;
+	initBoard(x, y);
+	std::cout << solution(x, y, z);
 	return (0);
 }
